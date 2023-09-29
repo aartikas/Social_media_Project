@@ -8,5 +8,5 @@ app.listen(port, function(err){
     if(err){
         console.log(`Error in running the server: ${err}`);
     }
-    console.log(`server is running at port :${port}`);
+    console.log(`Server is running at port :${port}`);
 })
