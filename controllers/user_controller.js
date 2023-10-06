@@ -4,10 +4,29 @@ const User = require('../models/users');
 
 module.exports.profile = function(req,res){
     //return res.end('<h1>User Profile</h1>');
-    return res.render('user_profile',{
-        title:'profile!',
+    if(req.cookies.user_id){
+        User.findById(req.cookies.user_id)
+        .then((user)=>{
+            if(user){
+                return res.render('user_profile',{
+                    title:'profile!',
+                    user:user
+            
+                });
+            }
+            else{
+                return res.redirect('users/signIn')
+            }
+        })
+        .catch((err)=>{
+            console.log("Error in finding user",err);
+        })
 
-    });
+    }
+    else{
+        return res.redirect('/users/signIn');
+    }
+
 }
 //Render Sign Up Page
 module.exports.signUp = function(req,res){
@@ -53,38 +72,54 @@ module.exports.create= function(req,res){
 }
 
 
-//Signin and create a session for the user
-module.exports.createSession = function(req,res){
+// //Signin and create a session for the user using Manual Authentication
+// module.exports.createSession = function(req,res){
 
-    //find the user
-    User.findOne({email:req.body.email})
-    .then((user)=>{
+//     //find the user
+//     User.findOne({email:req.body.email})
+//     .then((user)=>{
 
-    if(user){   
-    //handle password mismatch
-        if(user.password!=req.body.password){
-            return res.redirect('back');
-        }
+//     if(user){   
+//     //handle password mismatch
+//         if(user.password!=req.body.password){
+//             return res.redirect('back');
+//         }
 
         
-    //handle session creation
-    res.cookie('user_id',user.id);
-    return res.redirect('/users/profile');
+//     //handle session creation
+//     res.cookie('user_id',user.id);
+//     return res.redirect('/users/profile');
 
-    }
-    else{
-    //handle user not found
-    return res.redirect('back');
+//     }
+//     else{
+//     //handle user not found
+//     return res.redirect('back');
 
 
-    }
+//     }
 
-    })
-    .catch((err)=>
-    {if(err){
+//     })
+//     .catch((err)=>
+//     {if(err){
             
-        console.log("Error in finding user in signing in"); 
-        return;}
-    });
+//         console.log("Error in finding user in signing in"); 
+//         return;}
+//     });
   
+// }
+
+module.exports.createSession = function(req,res){
+    return res.redirect('/');
+}
+
+
+
+
+module.exports.logout= function(req,res){
+    console.log(req.cookies.user_id);
+    //res.cookies.user_id="";
+    //let getActive = req.tabs.query({ active: true, currentWindow: true });
+    res.cookie('user_id','');
+    
+    return res.redirect('/users/signIn')
 }
