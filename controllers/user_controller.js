@@ -2,34 +2,32 @@ const User = require('../models/users');
 
 
 
-module.exports.profile = function(req,res){
+module.exports.profile = async function(req,res){
     //return res.end('<h1>User Profile</h1>');
-    if(req.cookies.user_id){
-        User.findById(req.cookies.user_id)
-        .then((user)=>{
-            if(user){
+        const user = await User.findById(req.user._id);
+    
+        if(user){
                 return res.render('user_profile',{
                     title:'profile!',
                     user:user
             
                 });
             }
-            else{
+        else{
                 return res.redirect('users/signIn')
             }
-        })
-        .catch((err)=>{
-            console.log("Error in finding user",err);
-        })
+        }
 
-    }
-    else{
-        return res.redirect('/users/signIn');
-    }
 
-}
+
+
 //Render Sign Up Page
 module.exports.signUp = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    
+    
     return res.render('user_signUp',{
         title: 'Social Media| Sign up'
     });
@@ -37,9 +35,14 @@ module.exports.signUp = function(req,res){
 
 //render Sign In Page
 module.exports.signIn = function(req,res){
+    if(req.isAuthenticated()){
+        return res.redirect('/users/profile');
+    }
+    else{
     return res.render('user_signIn',{
         title: 'Social Media| Sign In'
     })
+}
 }
 
 //get the sign up data
@@ -122,4 +125,13 @@ module.exports.logout= function(req,res){
     res.cookie('user_id','');
     
     return res.redirect('/users/signIn')
+}
+
+module.exports.distroySession = function(req,res,next){
+    req.logout(function(err){
+        if(err){
+            return next(err);
+        }
+    });
+    return  res.redirect('/')
 }

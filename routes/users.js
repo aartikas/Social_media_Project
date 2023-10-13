@@ -9,6 +9,8 @@ router.get('/profile',passport.checkAuthentication, userController.profile);
 
 router.get('/signUp',userController.signUp);
 router.get('/signIn',userController.signIn);
+
+router.get('/signOut',userController.distroySession);
 router.post('/create',function(req,res){
     userController.create});
 router.post('/logout',function(req,res){
@@ -26,6 +28,7 @@ router.post('/createSession',passport.authenticate(
 //     'local',
 //     {failureRedirect:'users/signIn'}
 // ),userController.createSession);
+
 
 module.exports = router;
 
