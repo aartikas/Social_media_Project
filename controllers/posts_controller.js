@@ -3,7 +3,7 @@ const Comment = require('../models/comment');
 
 module.exports.create = function(req,res){
 
-    console.log(req.user);
+    //console.log(req.user);
     Post.create({ 
         content:req.body.content,
         user: req.user._id})
@@ -22,6 +22,7 @@ module.exports.destroy = async function(req,res){
     try{
         
         const post= await Post.findByIdAndRemove(req.params.id);
+        console.log("Post to be deleted is ",post);
         
         //.id for converting id to string
         if(post){
@@ -35,6 +36,7 @@ module.exports.destroy = async function(req,res){
         else{
             return res.redirect('back');
         }
+        //return res.redirect('back')
 
     }
     catch(err){
@@ -42,3 +44,4 @@ module.exports.destroy = async function(req,res){
         return;
     }
 };
+
