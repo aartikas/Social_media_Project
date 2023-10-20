@@ -9,7 +9,7 @@ module.exports.profile = async function(req,res){
         if(user){
                 return res.render('user_profile',{
                     title:'profile!',
-                    user:user
+                    profile_user:user
             
                 });
             }
