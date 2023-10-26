@@ -19,6 +19,18 @@ module.exports.profile = async function(req,res){
         }
 
 
+module.exports.update = async function(req,res){
+
+    if(req.user.id== req.params.id){
+        const user= await User.findByIdAndUpdate(req.params.id, req.body);
+        return res.redirect('back');
+
+    }
+    else{
+        return res.status(401).send('Unauthorised');
+    }
+}
+
 
 
 //Render Sign Up Page
