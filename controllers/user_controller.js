@@ -124,6 +124,7 @@ module.exports.create= function(req,res){
 // }
 
 module.exports.createSession = function(req,res){
+    req.flash('success','Logged in Successsfully');
     return res.redirect('/');
 }
 
@@ -145,5 +146,6 @@ module.exports.distroySession = function(req,res,next){
             return next(err);
         }
     });
+    req.flash('success','Logged out!! ');
     return  res.redirect('/')
 }

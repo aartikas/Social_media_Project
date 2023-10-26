@@ -25,14 +25,16 @@ try {
          path:'user'
       }
    });
+   
    let user_found = await User.find({});
-  return res.render("home" , {
-           title: "Codeial", 
-           posts: posts,
-           all_users:user_found
-        });
-} catch (err) {
-   console.log(err);
-   return ;
+   
+   return res.render("home" , {
+            title: "Codeial", 
+            posts: posts,
+            all_users:user_found
+         });
+      } catch (err) {
+      console.log(err);
+      return ;
 }
 }
