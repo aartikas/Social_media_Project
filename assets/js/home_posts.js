@@ -72,7 +72,7 @@
                     //console.log(data);
                     //console.log(data._id);
 
-                    $(`#post-${data.data.post._id}`).remove();
+                    $(`#post-${data.data.post_id}`).remove();
                 },
                 error: function(data){
                     console.log(error.responseText);

@@ -20,12 +20,31 @@ module.exports.profile = async function(req,res){
 
 
 module.exports.update = async function(req,res){
-
+  
     if(req.user.id== req.params.id){
-        const user= await User.findByIdAndUpdate(req.params.id, req.body);
-        return res.redirect('back');
+        //const user= await User.findByIdAndUpdate(req.params.id, req.body);
+            try{
+            let user= await User.findByIdAndUpdate(req.params.id, req.body);
+            User.uploadedAvataar(req,res,function(err){
+                if(err){console.log("**Multer Error***:",err);}
+                
 
-    }
+                user.name= req.body.name;
+                user.email = req.body.email;
+
+                if(req.file){
+                    //saving the path of uploaded file in the avataar field of the schema
+                    user.avataar = User.avataarPath +'/'+req.file.filename;
+                }
+
+                user.save();
+                return res.redirect('back');
+            });
+           
+
+        }catch(err){return res.redirect('back');
+        }
+    } 
     else{
         return res.status(401).send('Unauthorised');
     }
