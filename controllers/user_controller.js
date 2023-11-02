@@ -1,5 +1,6 @@
 const User = require('../models/users');
-
+const fs= require('fs');
+const path = require('path');
 
 
 module.exports.profile = async function(req,res){
@@ -33,6 +34,10 @@ module.exports.update = async function(req,res){
                 user.email = req.body.email;
 
                 if(req.file){
+
+                    // if(user.avataar){
+                    //     fs.unlinkSync(path.join(__dirname,"..",user.avataar));
+                    // }
                     //saving the path of uploaded file in the avataar field of the schema
                     user.avataar = User.avataarPath +'/'+req.file.filename;
                 }
